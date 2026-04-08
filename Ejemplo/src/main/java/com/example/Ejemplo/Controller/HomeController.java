@@ -15,4 +15,24 @@ public class HomeController {
     public String clientes() {
         return "clientes";
     }
+
+    @GetMapping("/detalleVenta")
+    public String detalleVenta() {
+        return "detalleVenta";
+    }
+
+    @GetMapping("/productos")
+    public String productos() {
+        return "productos";
+    }
+
+    @GetMapping("/usuarios")
+    public String usuarios() {
+        return "usuarios";
+    }
+
+    @GetMapping("/ventas")
+    public String ventas() {
+        return "ventas";
+    }
 }
