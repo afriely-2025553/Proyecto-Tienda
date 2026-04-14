@@ -17,22 +17,27 @@
     <button>Agregar Usuario</button>
 
     <table>
+        <thead>
         <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Rol</th>
-            <th>Acciones</th>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td>admin</td>
-            <td>Administrador</td>
+            <th>Código de Usuario</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Contraseña</th>
+            <th>Estado</th>
             <td>
                 <button>Editar</button>
                 <button>Eliminar</button>
             </td>
         </tr>
+        </thead>
+        <tbody id="tablaUsuarios" th:action="@{/listar}" method="get">
+            <tr th:each="u :  ${usuaios}">
+                <td th:text="${ u.codigo_usuario }"></td>
+                <td th:text="${ u.username }"></td>
+                <td th:text="${ u.email }"></td>
+                <td th:text="${ u.password }"></td>
+                <td th:text="${ u.estado }"></td>
+            </tr>
     </table>
 
 </div>
