@@ -35,6 +35,31 @@ public class UsuariosServiceImplements implements UsuariosService {
     }
 
     @Override
+    public Usuarios login(String usuario, String password) {
+        Usuarios u = usuariosRepository.findByUsername(usuario);
+
+        if (u != null && u.getPassword().equals(password)) {
+            return u;
+        }
+        return null;
+    }
+
+    @Override
+    public Usuarios registrar(String usuario, String password) {
+
+        if (usuariosRepository.findByUsername(usuario) != null) {
+            return null;
+        }
+
+        Usuarios u = new Usuarios();
+        u.setUsername(usuario);
+        u.setPassword(password);
+
+        return usuariosRepository.save(u);
+    }
+
+
+    @Override
     public Usuarios updateUsuarios(Integer id, Usuarios usuarios) {
         Usuarios usuario = usuariosRepository.findById(id).orElse(null);
         if (usuario != null) {
