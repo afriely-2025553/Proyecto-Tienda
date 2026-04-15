@@ -45,7 +45,7 @@ public class UsuariosServiceImplements implements UsuariosService {
     }
 
     @Override
-    public Usuarios registrar(String usuario, String password) {
+    public Usuarios registrar(String usuario, String password, String email) {
 
         if (usuariosRepository.findByUsername(usuario) != null) {
             return null;
@@ -54,24 +54,24 @@ public class UsuariosServiceImplements implements UsuariosService {
         Usuarios u = new Usuarios();
         u.setUsername(usuario);
         u.setPassword(password);
+        u.setEmail(email);
+        u.setEstado(1);
 
         return usuariosRepository.save(u);
     }
 
-
     @Override
-    public Usuarios updateUsuarios(Integer id, Usuarios usuarios) {
-        Usuarios usuario = usuariosRepository.findById(id).orElse(null);
-        if (usuario != null) {
-            usuario.setUsername(usuarios.getUsername());
-            usuario.setPassword(usuarios.getPassword());
-            usuario.setEmail(usuarios.getEmail());
-            usuario.setRol(usuarios.getRol());
-            usuario.setEstado(usuarios.getEstado());
-        } else {
-            throw new IllegalArgumentException("Usuario no encontrado");
-        }
-        return usuariosRepository.save(usuario);
+    public Usuarios updateUsuarios(Integer id, Usuarios datos) {
+        Usuarios u = usuariosRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        u.setUsername(datos.getUsername());
+        u.setEmail(datos.getEmail());
+        u.setPassword(datos.getPassword());
+        u.setRol(datos.getRol());
+        u.setEstado(datos.getEstado());
+
+        return usuariosRepository.save(u);
     }
 
     @Override
