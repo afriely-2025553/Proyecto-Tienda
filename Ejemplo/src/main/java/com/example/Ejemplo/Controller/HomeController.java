@@ -26,7 +26,7 @@ public class HomeController {
         return "productos";
     }
 
-    @GetMapping("/usuarios")
+    @GetMapping("/usuarios-view")
     public String usuarios() {
         return "usuarios";
     }
