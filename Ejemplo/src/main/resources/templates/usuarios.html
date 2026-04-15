@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Usuarios</title>
-    <link rel="stylesheet" href="entidadesEstilos.css">
+    <link rel="stylesheet" href="/entidadesEstilos.css">
 </head>
 <body>
 
@@ -14,30 +14,39 @@
 
 <div class="container">
 
-    <button>Agregar Usuario</button>
+    <a href="/usuarios/register">
+        <button>Agregar Usuario</button>
+    </a>
 
     <table>
         <thead>
         <tr>
-            <th>Código de Usuario</th>
+            <th>Código</th>
             <th>Nombre</th>
             <th>Email</th>
-            <th>Contraseña</th>
             <th>Estado</th>
-            <td>
-                <button>Editar</button>
-                <button>Eliminar</button>
-            </td>
+            <th>Acciones</th>
         </tr>
         </thead>
-        <tbody id="tablaUsuarios" th:action="@{/listar}" method="get">
-            <tr th:each="u :  ${usuaios}">
-                <td th:text="${ u.codigo_usuario }"></td>
-                <td th:text="${ u.username }"></td>
-                <td th:text="${ u.email }"></td>
-                <td th:text="${ u.password }"></td>
-                <td th:text="${ u.estado }"></td>
-            </tr>
+
+        <tbody>
+        <tr th:each="u : ${usuarios}">
+            <td th:text="${u.codigo_usuario}"></td>
+            <td th:text="${u.username}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.estado}"></td>
+
+            <td class="acciones">
+                <a th:href="@{'/usuarios/editar/' + ${u.codigo_usuario}}">
+                    <button>Editar</button>
+                </a>
+
+                <a th:href="@{/usuarios/eliminar/{id}(id=${u.codigo_usuario})}">
+                    <button class="btn-delete">Eliminar</button>
+                </a>
+            </td>
+        </tr>
+        </tbody>
     </table>
 
 </div>
