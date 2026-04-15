@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -43,20 +45,23 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    public String guardar(@RequestParam String usuario,
-                          @RequestParam String password,
-                          Model model) {
-
-        Usuarios usuarios = usuariosService.registrar(usuario, password);
-
-        if (usuarios == null) {
+    public String guardar(@RequestParam("username") String username,
+                          @RequestParam("password") String password,
+                          @RequestParam("email") String email,
+                          @RequestParam("archivo") MultipartFile archivo,
+                          Model model) throws IOException {
+        if (archivo.isEmpty()) {
+            return "Por favor, selecciona un archivo.";
+        }
+        Usuarios u = usuariosService.registrar(username, password, email);
+        model.addAttribute("usuarioLogueado", usuariosService.getAllUsuarios());
+        if (u == null) {
             model.addAttribute("error", "Usuario ya existe");
-            return "registro";
+            return "register";
         }
 
-        return "redirect:/usuario";
+        return "redirect:/acceder";
     }
-
 
     @GetMapping("/lista")
     public String listar(Model model) {
