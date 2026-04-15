@@ -1,9 +1,10 @@
 package com.example.Ejemplo.Entity;
 
 import jakarta.persistence.*;
+import org.jspecify.annotations.Nullable;
 
 @Entity
-@Table (name = "Usuarios")
+@Table (name = "usuarios")
 public class Usuarios {
 
     @Id
