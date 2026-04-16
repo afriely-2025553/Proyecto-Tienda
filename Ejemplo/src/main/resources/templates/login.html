@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" >
+    <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" th:href="@{/login.css}">
 </head>
 <body>
 
@@ -11,6 +11,7 @@
     <h2>Iniciar Sesión</h2>
 
     <form th:action="@{/login}" method="post">
+
         <div class="input-group">
             <label>Usuario</label>
             <input type="text" name="username" required>
@@ -18,10 +19,11 @@
 
         <div class="input-group">
             <label>Contraseña</label>
-            <input type="password" name="pass" required>
+            <input type="password" name="password" required>
         </div>
-
         <button type="submit">Entrar</button>
+        <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
     </form>
 </div>
 
