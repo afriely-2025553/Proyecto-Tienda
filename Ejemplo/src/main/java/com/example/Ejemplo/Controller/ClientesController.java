@@ -93,7 +93,7 @@ public class ClientesController {
         if (existente == null) return "redirect:/clientes";
 
         existente.setNombre_cliente(c.getNombre_cliente());
-        existente.setApellido_cliente(c.getApellido_cliente()); 
+        existente.setApellido_cliente(c.getApellido_cliente());
         existente.setDireccion(c.getDireccion());
         existente.setEstado(c.getEstado());
 
