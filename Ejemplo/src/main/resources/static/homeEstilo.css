@@ -2,17 +2,18 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #eef2f7;
+    background: linear-gradient(to right, #eef2f7, #e2e8f0);
 }
 
-/* Barra superior */
+/* Navbar */
 .navbar {
     background-color: #1e293b;
     color: white;
-    padding: 15px 25px;
+    padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .navbar h1 {
@@ -20,32 +21,32 @@ body {
     font-size: 20px;
 }
 
+/* Botón cerrar sesión */
 .navbar button {
     background-color: #6366f1;
     border: none;
-    padding: 8px 14px;
+    padding: 8px 16px;
     color: white;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .navbar button:hover {
     background-color: #4f46e5;
+    transform: scale(1.05);
 }
 
-/* Contenido */
+/* Contenedor */
 .container {
-    padding: 30px;
+    padding: 40px;
 }
 
 /* Título */
-.title {
-    margin-bottom: 25px;
-}
-
 .title h2 {
     margin: 0;
     color: #0f172a;
+    font-size: 28px;
 }
 
 .title p {
@@ -57,31 +58,79 @@ body {
 .menu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+    gap: 25px;
+    margin-top: 25px;
 }
 
-/* Tarjetas PRO */
+/* Tarjetas (MEJORADAS) */
 .card {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
+    position: relative;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
     text-decoration: none;
     color: #0f172a;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    transition: all 0.2s ease;
-    border-left: 5px solid #6366f1;
-}
+    font-size: 18px;
+    font-weight: 600;
 
-/* Hover elegante */
-.card:hover {
-    transform: translateY(-5px);
+    /* 🔥 MÁS VISIBILIDAD */
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    border: 1px solid #e2e8f0;
+    border-left: 8px solid #6366f1;
+
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
-/* Texto dentro de tarjeta */
+/* Hover PRO */
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    background: #6366f1;
+    color: white;
+}
+
+/* Texto secundario */
 .card span {
     display: block;
     font-size: 14px;
     color: #64748b;
-    margin-top: 5px;
+    margin-top: 6px;
+    transition: 0.3s;
+}
+
+/* Color en hover */
+.card:hover span {
+    color: #e0e7ff;
+}
+
+/* Efecto overlay suave */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 15px;
+    background: rgba(99,102,241,0.05);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+/* Línea animada inferior */
+.card::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: #4f46e5;
+    transition: width 0.3s;
+}
+
+.card:hover::after {
+    width: 100%;
 }
