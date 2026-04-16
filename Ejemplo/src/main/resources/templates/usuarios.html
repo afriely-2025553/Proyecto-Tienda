@@ -14,7 +14,7 @@
 
 <div class="container">
 
-    <a href="/usuarios/register">
+    <a href="/usuarios/register" th:if="${usuario.rol == 'ADMIN'}">
         <button>Agregar Usuario</button>
     </a>
 
@@ -25,7 +25,8 @@
             <th>Nombre</th>
             <th>Email</th>
             <th>Estado</th>
-            <th>Acciones</th>
+
+            <th th:if="${usuario.rol == 'ADMIN'}">Acciones</th>
         </tr>
         </thead>
 
@@ -36,14 +37,16 @@
             <td th:text="${u.email}"></td>
             <td th:text="${u.estado}"></td>
 
-            <td class="acciones">
-                <a th:href="@{'/usuarios/editar/' + ${u.codigo_usuario}}">
-                    <button>Editar</button>
+            <td th:if="${usuario.rol == 'ADMIN'}" class="acciones">
+
+                <a th:href="@{/usuarios/editar/{id}(id=${u.codigo_usuario})}">
+                    <button class="btn-edit">Editar</button>
                 </a>
 
                 <a th:href="@{/usuarios/eliminar/{id}(id=${u.codigo_usuario})}">
                     <button class="btn-delete">Eliminar</button>
                 </a>
+
             </td>
         </tr>
         </tbody>
