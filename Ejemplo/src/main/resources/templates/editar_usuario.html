@@ -11,33 +11,27 @@
     <h2>Editar Usuario</h2>
     <a href="/usuarios">Volver</a>
 </div>
-
 <div class="container">
-
     <div class="card-form">
+        <form th:action="@{/usuarios/actualizar}" method="post" th:object="${usuario}">
 
-        <form th:action="@{/usuarios/editar}" method="post" th:object="${usuario}">
-            
             <input type="hidden" th:field="*{codigo_usuario}">
-
             <label>Nombre</label>
             <input type="text" th:field="*{username}" required>
-
             <label>Email</label>
             <input type="email" th:field="*{email}" required>
-
             <label>Password</label>
             <input type="text" th:field="*{password}" required>
-
             <label>Estado</label>
             <input type="number" th:field="*{estado}" required>
-
+            <label>Rol</label>
+            <select th:field="*{rol}" required>
+                <option value="ADMIN">ADMIN</option>
+                <option value="USER">USER</option>
+            </select>
             <button type="submit">Actualizar</button>
-
         </form>
-
     </div>
-
 </div>
 
 </body>
