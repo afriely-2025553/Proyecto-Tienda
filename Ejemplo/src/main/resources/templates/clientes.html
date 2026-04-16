@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Clientes</title>
-    <link rel="stylesheet" href="entidadesEstilos.css">
+    <link rel="stylesheet" href="/entidadesEstilos.css">
 </head>
 <body>
 
@@ -14,20 +14,52 @@
 
 <div class="container">
 
-    <button>Agregar Cliente</button>
+    <!-- BOTÓN SOLO ADMIN -->
+    <div th:if="${usuario != null and usuario.rol == 'ADMIN'}">
+        <a href="/clientes/nuevo">
+            <button>Agregar Cliente</button>
+        </a>
+    </div>
 
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
-            <th>Acciones</th>
-            <td>
-                <button>Editar</button>
-                <button>Eliminar</button>
-            </td>
-        </tr>
+    <!-- MENSAJE SI NO HAY DATOS -->
+    <div th:if="${#lists.isEmpty(clientes)}">
+        <p style="margin-top:20px; color:#64748b;">
+            No hay clientes registrados.
+        </p>
+    </div>
+
+    <!-- TABLA -->
+    <table th:if="${!#lists.isEmpty(clientes)}">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+
+                <th th:if="${usuario != null and usuario.rol == 'ADMIN'}">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="c : ${clientes}">
+                <td th:text="${c.dpi_cliente}"></td>
+                <td th:text="${c.nombre_cliente}"></td>
+                <td th:text="${c.apellido_cliente}"></td>
+                <td th:text="${c.direccion}"></td>
+                <td th:text="${c.estado}"></td>
+
+                <td th:if="${usuario != null and usuario.rol == 'ADMIN'}">
+                    <a th:href="@{/clientes/editar/{id}(id=${c.dpi_cliente})}">
+                        <button class="btn-edit">Editar</button>
+                    </a>
+                    <a th:href="@{/clientes/eliminar/{id}(id=${c.dpi_cliente})}">
+                        <button class="btn-delete">Eliminar</button>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
     </table>
 
 </div>
