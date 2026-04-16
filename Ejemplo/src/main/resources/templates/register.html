@@ -13,16 +13,20 @@
         <h2 class="titulo">Registro</h2>
 
         <form class="form-register" th:action="@{/usuarios/registro}" method="post">
+
             <input class="input-text" type="text" name="username" placeholder="Username" required>
             <input class="input-text" type="email" name="email" placeholder="Email" required>
             <input class="input-text" type="password" name="password" placeholder="Password" required>
             <input class="input-text" type="password" name="confirmPassword" placeholder="Confirm Password" required>
+            <label>Rol</label>
+            <select class="input-text" name="rol" required>
+                <option value="USER">USER</option>
+                <option value="ADMIN">ADMIN</option>
+            </select>
 
             <button class="btn-primary" type="submit">Registrar</button>
         </form>
-
         <p class="error" th:if="${error}" th:text="${error}"></p>
-
         <p class="login-link">
             ¿Ya tienes una cuenta?
             <a th:href="@{/acceder}">Inicia sesión aquí</a>
