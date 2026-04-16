@@ -39,7 +39,7 @@ public class ClientesServiceImplements implements ClientesService {
         Clientes cliente = clientesRepository.findById(id).orElse(null);
         if (cliente != null) {
             cliente.setNombre_cliente(clientes.getNombre_cliente());
-            cliente.setApeliido_cliente(clientes.getApeliido_cliente());
+            cliente.setApellido_cliente(clientes.getApellido_cliente());
             cliente.setDireccion(clientes.getDireccion());
             cliente.setEstado(clientes.getEstado());
         } else {
