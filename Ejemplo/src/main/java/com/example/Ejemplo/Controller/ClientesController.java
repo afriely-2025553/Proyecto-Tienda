@@ -1,16 +1,15 @@
 package com.example.Ejemplo.Controller;
 
 import com.example.Ejemplo.Entity.Clientes;
+import com.example.Ejemplo.Entity.Usuarios;
 import com.example.Ejemplo.Service.ClientesService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/clientes")
+@Controller
+@RequestMapping("/clientes")
 public class ClientesController {
 
     private final ClientesService clientesService;
@@ -20,47 +19,100 @@ public class ClientesController {
     }
 
     @GetMapping
-    public List<Clientes> getAllClientes() {
-        return clientesService.getAllClientes();
+    public String listar(Model model, HttpSession session) {
+
+        Usuarios usuario = (Usuarios) session.getAttribute("usuarioLogueado");
+
+        if (usuario == null) return "redirect:/acceder";
+
+        model.addAttribute("clientes", clientesService.getAllClientes());
+        model.addAttribute("usuario", usuario);
+
+        return "clientes";
     }
 
-    @PostMapping
-    public ResponseEntity<Object> createClientes(@Valid @RequestBody Clientes clientes) {
-        try {
-            Clientes createClientes = clientesService.saveClientes(clientes);
-            return new ResponseEntity<>(createClientes, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @GetMapping("/nuevo")
+    public String nuevo(Model model, HttpSession session) {
+
+        Usuarios u = (Usuarios) session.getAttribute("usuarioLogueado");
+
+        if (u == null || !"ADMIN".equals(u.getRol())) {
+            return "redirect:/clientes";
         }
+
+        model.addAttribute("cliente", new Clientes());
+
+        return "register_clientes";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateClientes(@PathVariable Integer id, @Valid @RequestBody Clientes clientes) {
-        try {
-            Clientes updateClientes = clientesService.updateClientes(id, clientes);
-            return new ResponseEntity<>(updateClientes, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @PostMapping("/guardar")
+    public String guardar(@ModelAttribute Clientes c, HttpSession session) {
+
+        Usuarios u = (Usuarios) session.getAttribute("usuarioLogueado");
+
+        if (u == null || !"ADMIN".equals(u.getRol())) {
+            return "redirect:/clientes";
         }
+
+        clientesService.saveClientes(c);
+
+        return "redirect:/clientes";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getClientesById(@PathVariable Integer id) {
-        try {
-            Clientes searchClientes = clientesService.getClientesById(id);
-            return new ResponseEntity<>(searchClientes, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Integer id, Model model, HttpSession session) {
+
+        Usuarios u = (Usuarios) session.getAttribute("usuarioLogueado");
+
+        if (u == null || !"ADMIN".equals(u.getRol())) {
+            return "redirect:/clientes";
         }
+
+        Clientes cliente = clientesService.getClientesById(id);
+
+        if (cliente == null) {
+            return "redirect:/clientes";
+        }
+
+        model.addAttribute("cliente", cliente);
+
+        return "editar_clientes";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteClientes(@PathVariable Integer id) {
-        try {
-            clientesService.deleteClientes(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @PostMapping("/actualizar")
+    public String actualizar(@ModelAttribute Clientes c, HttpSession session) {
+
+        Usuarios u = (Usuarios) session.getAttribute("usuarioLogueado");
+
+        if (u == null || !"ADMIN".equals(u.getRol())) {
+            return "redirect:/clientes";
         }
+
+        Clientes existente = clientesService.getClientesById(c.getDpi_cliente());
+
+        if (existente == null) return "redirect:/clientes";
+
+        existente.setNombre_cliente(c.getNombre_cliente());
+        existente.setApellido_cliente(c.getApellido_cliente()); 
+        existente.setDireccion(c.getDireccion());
+        existente.setEstado(c.getEstado());
+
+        clientesService.saveClientes(existente);
+
+        return "redirect:/clientes";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id, HttpSession session) {
+
+        Usuarios u = (Usuarios) session.getAttribute("usuarioLogueado");
+
+        if (u == null || !"ADMIN".equals(u.getRol())) {
+            return "redirect:/clientes";
+        }
+
+        clientesService.deleteClientes(id);
+
+        return "redirect:/clientes";
     }
 }
